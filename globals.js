@@ -1,5 +1,6 @@
 // globals.js
 const BOARD_SIZE = 8;
+const STARTING_MOVES = 30;
 const GEM_TYPES = ['\uD83C\uDF4E', '\uD83D\uDC8E', '\uD83C\uDF47', '\uD83C\uDF4B', '\uD83C\uDF52']; 
 
 let board = []; 

@@ -14,6 +14,9 @@
 
 ---
 
+<p align="center"><img src="https://github.com/AnonBOTpl/GemVirus/blob/main/screen.png" alt="GemVirus Gameplay" width="80%"></p>
+
+
 ## 🌟 Features
 
 - **No Dependencies:** Built entirely with pure HTML5, CSS3, and Vanilla JS. No React, no external libraries, no image files. 

@@ -127,6 +127,11 @@ function showGameOver(isVictory = false) {
             localStorage.setItem('match3_bestScore', bestScore);
             document.getElementById('best-display').innerText = bestScore;
             recordMsg.classList.remove('hidden');
+            launchConfetti();
+        }
+        recordGameStat('arcade', score);
+        if (score > 0) {
+            submitScore(getNick(), score, 'arcade');
         }
     } else if (gameMode === 'story') {
         if (isVictory) {
@@ -134,6 +139,8 @@ function showGameOver(isVictory = false) {
             title.innerText = t('level_complete');
             title.style.color = "#2ecc71";
             subtitle.innerText = t('awesome_job');
+            launchConfetti();
+            recordGameStat('story', score, true);
             
             if (currentLevelData.id === unlockedLevel && STORY_LEVELS.length > unlockedLevel) {
                 unlockedLevel++;
@@ -159,5 +166,56 @@ function showGameOver(isVictory = false) {
         }
     }
     
+    if (gameMode === 'daily') {
+        playSound('match', 3);
+        title.innerText = '📅 Daily Complete!';
+        title.style.color = '#e67e22';
+        subtitle.innerText = 'Daily challenge finished!';
+        launchConfetti();
+        markDailyPlayed(score);
+        recordGameStat('daily', score);
+        submitScore(getNick(), score, 'daily');
+    }
+
     modal.classList.remove('hidden');
+}
+// ── CONFETTI ──────────────────────────────────────────────────────
+function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.display = 'block';
+
+    const colors = ['#e74c3c','#2ecc71','#3498db','#f39c12','#9b59b6','#1abc9c','#e67e22'];
+    const pieces = Array.from({length: 120}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * -canvas.height,
+        w: 8 + Math.random() * 8,
+        h: 5 + Math.random() * 5,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        angle: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 0.2,
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 4
+    }));
+
+    let frame = 0;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+            ctx.restore();
+            p.x += p.vx; p.y += p.vy; p.angle += p.spin;
+        });
+        frame++;
+        if (frame < 180) requestAnimationFrame(draw);
+        else canvas.style.display = 'none';
+    }
+    draw();
 }

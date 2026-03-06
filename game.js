@@ -1,5 +1,35 @@
 // game.js
+function updateDailyStatus() {
+    const el = document.getElementById('daily-status-text');
+    if (!el) return;
+    if (hasDailyBeenPlayed()) {
+        const s = getDailyScore();
+        el.innerText = `✅ Done! Your score: ${s ? s.toLocaleString() : '?'}`;
+        el.style.color = '#2ecc71';
+    } else {
+        el.innerText = "Play today's challenge!";
+        el.style.color = '';
+    }
+}
+
+function startDailyChallenge() {
+    if (!getNick()) {
+        openNickModal(() => startDailyChallenge());
+        return;
+    }
+    if (hasDailyBeenPlayed()) {
+        showLeaderboard('daily');
+        return;
+    }
+    initDailyRng();
+    startGameMode('daily');
+}
+
 function startGameMode(mode, levelId = null) {
+    if (mode === 'arcade' && !getNick()) {
+        openNickModal(() => startGameMode(mode, levelId));
+        return;
+    }
     initAudio();
     gameMode = mode;
     score = 0;
@@ -200,6 +230,7 @@ function returnToMenu() {
     
     document.getElementById('level-progress-text').innerText = `${t('lvl_text')} ${unlockedLevel}`;
     document.getElementById('max-level-text').innerText = `${t('max_level')} ${maxLevelReached}`;
+    updateDailyStatus();
 }
 
 // --- SETTINGS LOGIC ---
@@ -238,7 +269,7 @@ function applySettings() {
 
 // Boot up listeners
 document.body.addEventListener('click', initAudio, { once: true });
-document.getElementById('restart-btn').addEventListener('click', () => { startGameMode(gameMode, currentLevelData?.id); });
+document.getElementById('restart-btn').addEventListener('click', () => { document.getElementById('game-over-modal').classList.add('hidden'); startGameMode(gameMode, currentLevelData?.id); });
 document.getElementById('play-again-btn').addEventListener('click', () => { startGameMode(gameMode, currentLevelData?.id); });
 document.getElementById('next-level-btn').addEventListener('click', () => {
     document.getElementById('game-over-modal').classList.add('hidden');
