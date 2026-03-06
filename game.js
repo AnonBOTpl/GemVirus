@@ -55,6 +55,12 @@ function startGameMode(mode, levelId = null) {
     else if (mode === 'relax') {
         movesLeft = Infinity;
         iceToSpawn = 0; 
+    }
+    else if (mode === 'daily') {
+        movesLeft = STARTING_MOVES;
+        iceToSpawn = 10;
+        currentLevelData = { id: 0, targetScore: 5000, targetIce: 10, virusSpawned: 0 };
+        document.getElementById('goal-container').classList.remove('hidden');
     } 
     else if (mode === 'story') {
         const lvl = levelId || unlockedLevel;
