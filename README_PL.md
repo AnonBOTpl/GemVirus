@@ -23,13 +23,18 @@
   - Dopasuj w kształt T lub L ➡️ **Bomba Krzyżowa** (niszczy cały rząd i kolumnę)
   - Dopasuj 5 w linii ➡️ **Błyskawica** (niszczy wszystkie owoce danego koloru)
   - **Łącz Power-Upy!** Zamień dwa specjalne owoce miejscami, aby wywołać reakcję łańcuchową (np. Armagedon niszczący całą planszę).
-- **Proceduralne Audio:** Wszystkie efekty dźwiękowe (kliknięcia, wybuchy, uderzenia) są generowane w czasie rzeczywistym przez natywne **Web Audio API** przeglądarki.
-- **3 Tryby Gry:**
-  - **📖 Tryb Fabularny (Story):** Kampania (10 poziomów) z rosnącym poziomem trudności.
+- **Proceduralne Audio:** Wszystkie efekty dźwiękowe są generowane w czasie rzeczywistym przez natywne **Web Audio API** przeglądarki.
+- **4 Tryby Gry:**
+  - **📖 Tryb Fabularny (Story):** Kampania z **20 poziomami** i rosnącym poziomem trudności.
   - **⏱️ Tryb Arcade:** Klasyczne 30 ruchów, walka o High Score z zapisem rekordu.
+  - **📅 Wyzwanie Dnia:** Jedna unikalna plansza każdego dnia — taka sama dla wszystkich graczy. Rywalizuj w dziennym rankingu!
   - **☕ Tryb Relaks:** Nieskończona rozgrywka, bez limitu ruchów i bez wirusa.
-- **Inteligentny Silnik:** System detekcji "Deadlocka" (automatyczne tasowanie planszy, jeśli brak ruchów) oraz System Podpowiedzi (wskazuje dozwolony ruch po 5 sekundach bezczynności).
-- **Ustawienia (Quality of Life):** Lokalizacja EN/PL, przybliżanie planszy (Zoom) oraz ciemny motyw kafelków niemęczący wzroku.
+- **🏆 Globalny Ranking:** Wyniki z Arcade i Wyzwania Dnia zapisywane online. Sprawdź swoje miejsce wśród innych graczy.
+- **📊 Statystyki Gracza:** Śledź liczbę rozgrywek, rekordy, średni wynik, ukończone poziomy i ulubiony tryb.
+- **🎉 Konfetti:** Świętuj nowe rekordy i ukończone poziomy z efektem konfetti.
+- **📱 Wsparcie PWA:** Zainstaluj GemVirus na telefonie lub komputerze jak prawdziwą aplikację — działa też offline.
+- **Inteligentny Silnik:** System detekcji "Deadlocka" oraz System Podpowiedzi (wskazuje ruch po 5 sekundach bezczynności).
+- **Ustawienia (Quality of Life):** Lokalizacja EN/PL, przybliżanie planszy (Zoom), ciemny motyw kafelków, licznik poziomu w trybie Story (np. Poziom 4/20).
 
 ## 🕹️ Jak Grać
 
@@ -48,6 +53,26 @@ Aby zagrać lokalnie, nie potrzebujesz serwera ani instalacji. Wystarczy przegl�
    ```
 2. Otwórz folder i kliknij dwukrotnie plik `index.html`.
 3. Gotowe!
+
+## 📋 Historia Zmian (Changelog)
+
+### v1.2.0
+- Dodano tryb **Wyzwanie Dnia** — unikalna plansza każdego dnia, wspólny ranking
+- Rozszerzono **Tryb Fabularny** z 10 do **20 poziomów**
+- Dodano **Globalny Ranking** z filtrami Arcade i Wyzwanie Dnia
+- Dodano panel **Statystyk Gracza** (rozgrywki, rekordy, średni wynik, ulubiony tryb)
+- Dodano **animację konfetti** przy nowych rekordach i ukończeniu poziomu
+- Dodano **wsparcie PWA** — instalacja jako aplikacja, tryb offline
+- Dodano **licznik poziomu** (np. Poziom 4/20) w HUD trybu Story
+- Poprawiono pełną lokalizację polską dla wszystkich nowych przycisków
+
+### v1.1.0
+- Dodano system **nicku gracza** dla rankingu
+- Naprawiono błąd `STARTING_MOVES` w trybie Arcade
+- Naprawiono okno game-over nie zamykające się po "Zagraj Ponownie"
+
+### v1.0.0
+- Pierwsze wydanie
 
 ## 📜 Autor
 

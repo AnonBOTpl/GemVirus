@@ -16,23 +16,27 @@
 
 <p align="center"><img src="https://github.com/AnonBOTpl/GemVirus/blob/main/screen.png" alt="GemVirus Gameplay" width="80%"></p>
 
-
 ## 🌟 Features
 
-- **No Dependencies:** Built entirely with pure HTML5, CSS3, and Vanilla JS. No React, no external libraries, no image files. 
+- **No Dependencies:** Built entirely with pure HTML5, CSS3, and Vanilla JS. No React, no external libraries, no image files.
 - **Dynamic Virus Mechanic:** Frozen tiles (`Ice Blocks`) are obstacles. If you don't break them during your turn, the virus spreads to adjacent fruits!
 - **Epic Combos & Power-ups:**
   - Match 4 ➡️ **Bomb** (3x3 explosion)
   - Match T or L shape ➡️ **Cross Bomb** (clears a row and column)
   - Match 5 ➡️ **Lightning** (clears all gems of a specific color)
   - **Combine Power-ups!** Swap two power-ups directly to unleash massive chain reactions (e.g., Armageddon, Infection).
-- **Procedural Synthesizer Audio:** All sound effects (clicks, explosions, dynamic pitch-shifting match sounds) are generated in real-time using the browser's native **Web Audio API**.
-- **3 Game Modes:**
-  - **📖 Story Mode:** A 10-level campaign with increasing difficulty and specific goals (e.g., clear the board of virus).
+- **Procedural Synthesizer Audio:** All sound effects are generated in real-time using the browser's native **Web Audio API**.
+- **4 Game Modes:**
+  - **📖 Story Mode:** A 20-level campaign with increasing difficulty and specific goals.
   - **⏱️ Arcade Mode:** Classic 30-move limit to get the highest score possible.
+  - **📅 Daily Challenge:** One unique board per day — same for all players. Compete on a daily leaderboard!
   - **☕ Relax Mode:** Endless gameplay with no limits and no virus.
-- **Smart Engine:** Features a Deadlock detector (auto-shuffles the board if no moves are possible) and an intelligent Hint System that suggests a move after 5 seconds of inactivity.
-- **Quality of Life:** English/Polish localization, UI Zoom options, and an Eye-saving Gray Theme mode saved locally in your browser.
+- **🏆 Global Leaderboard:** Arcade and Daily Challenge scores saved online. See how you rank against other players.
+- **📊 Player Stats:** Track your games played, best scores, average score, levels completed and favourite mode.
+- **🎉 Confetti:** Celebrate new records and level completions in style.
+- **📱 PWA Support:** Install GemVirus on your phone or desktop like a native app — works offline too.
+- **Smart Engine:** Deadlock detector (auto-shuffles if no moves are possible) and a Hint System that suggests a move after 5 seconds of inactivity.
+- **Quality of Life:** English/Polish localization, UI Zoom options, Eye-saving Gray Theme, level progress counter in Story mode.
 
 ## 🕹️ How to Play
 
@@ -51,6 +55,26 @@ To run the game locally, you just need a web browser! No installation required.
    ```
 2. Open the folder and double-click `index.html`.
 3. Enjoy!
+
+## 📋 Changelog
+
+### v1.2.0
+- Added **Daily Challenge** mode — unique seeded board every day, shared leaderboard
+- Expanded **Story Mode** from 10 to **20 levels**
+- Added **Global Leaderboard** with Arcade and Daily filters
+- Added **Player Stats** panel (games played, best scores, avg score, fav mode)
+- Added **Confetti animation** on new records and level completions
+- Added **PWA support** — install as a native app, works offline
+- Added **level progress counter** (e.g. Level 4/20) in Story Mode HUD
+- Fixed full Polish localization for all new UI buttons
+
+### v1.1.0
+- Added player **nick system** for leaderboard identification
+- Fixed `STARTING_MOVES` not defined error in Arcade mode
+- Fixed game-over modal not closing on "Play Again"
+
+### v1.0.0
+- Initial release
 
 ## 📜 Credits
 

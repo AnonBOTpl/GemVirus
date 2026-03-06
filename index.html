@@ -31,7 +31,7 @@
                 <span class="sub-text" data-i18n="arcade_desc">30 Moves - High Score</span>
             </button>
             <button class="btn menu-btn" style="background-color: #e67e22;" onclick="startDailyChallenge()">
-                <span>📅 Daily Challenge</span>
+                <span data-i18n="daily_btn">📅 Daily Challenge</span>
                 <span class="sub-text" id="daily-status-text">Play today's challenge!</span>
             </button>
             <button class="btn menu-btn relax-btn" onclick="startGameMode('relax')">
@@ -39,10 +39,10 @@
                 <span class="sub-text" data-i18n="relax_desc">Endless - No pressure</span>
             </button>
             <button class="btn menu-btn" style="background-color: #8e44ad; margin-top: 10px; width: 200px; padding: 10px;" onclick="showLeaderboard()">
-                <span>🏆 Leaderboard</span>
+                <span data-i18n="leaderboard_btn">🏆 Leaderboard</span>
             </button>
             <button class="btn menu-btn" style="background-color: #16a085; margin-top: 5px; width: 200px; padding: 10px;" onclick="showStatsModal()">
-                <span>📊 My Stats</span>
+                <span data-i18n="stats_btn">📊 My Stats</span>
             </button>
             <button class="btn menu-btn" style="background-color: #7f8c8d; margin-top: 5px; width: 200px; padding: 10px;" onclick="openSettings()">
                 <span data-i18n="settings_btn">⚙️ Settings</span>
@@ -149,6 +149,7 @@
             <div class="stat-box" id="score-container"><span data-i18n="score">Score:</span> <span id="score-display">0</span></div>
             <div class="stat-box hidden" id="best-container"><span data-i18n="best">Best:</span> <span id="best-display">0</span></div>
             <div class="stat-box hidden" id="goal-container" style="color: #2ecc71;"><span data-i18n="goal">Goal:</span> <span id="goal-display">None</span></div>
+            <div class="stat-box hidden" id="level-counter-container" style="color: #f39c12;"><span data-i18n="level_progress">Level</span> <span id="level-counter-display">1/20</span></div>
             
             <div class="stat-box"><span data-i18n="combo">Combo:</span> <span id="combo-display" class="combo-text">1x</span></div>
             <div class="stat-box" id="moves-container"><span data-i18n="moves">Moves:</span> <span id="moves-display">30</span></div>

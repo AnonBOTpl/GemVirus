@@ -42,6 +42,7 @@ function startGameMode(mode, levelId = null) {
     document.getElementById('gameplay-area').classList.remove('hidden');
     document.getElementById('best-container').classList.add('hidden');
     document.getElementById('goal-container').classList.add('hidden');
+    document.getElementById('level-counter-container').classList.add('hidden');
     
     let iceToSpawn = 0;
 
@@ -66,6 +67,8 @@ function startGameMode(mode, levelId = null) {
         iceToSpawn = currentLevelData.iceCount;
         
         document.getElementById('goal-container').classList.remove('hidden');
+        document.getElementById('level-counter-container').classList.remove('hidden');
+        document.getElementById('level-counter-display').innerText = `${currentLevelData.id}/${STORY_LEVELS.length}`;
         
         // Dynamically get the language specific description
         const descKey = `desc_${settings.lang}`;

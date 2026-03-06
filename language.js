@@ -49,7 +49,12 @@ const TRANSLATIONS = {
         virus_text: "VIRUS!",
         lvl_text: "Level",
         shuffling: "NO MOVES! SHUFFLING...",
-        max_level: "Record: Level"
+        max_level: "Record: Level",
+        leaderboard_btn: "🏆 Leaderboard",
+        stats_btn: "📊 My Stats",
+        daily_btn: "📅 Daily Challenge",
+        daily_play: "Play today's challenge!",
+        level_progress: "Level"
     },
     pl: {
         title_main: "GEM",
@@ -98,7 +103,12 @@ const TRANSLATIONS = {
         virus_text: "WIRUS!",
         lvl_text: "Poziom",
         shuffling: "BRAK RUCHÓW! TASOWANIE...",
-        max_level: "Rekord: Poziom"
+        max_level: "Rekord: Poziom",
+        leaderboard_btn: "🏆 Ranking",
+        stats_btn: "📊 Moje Statystyki",
+        daily_btn: "📅 Wyzwanie Dnia",
+        daily_play: "Zagraj dzisiejsze wyzwanie!",
+        level_progress: "Poziom"
     }
 };
 
