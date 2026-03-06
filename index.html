@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match-3: Virus Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Main Menu Overlay -->
+    <div id="main-menu" class="menu-overlay">
+        <div class="menu-content">
+            <h1 class="game-title" data-i18n="title">GEM<span>VIRUS</span></h1>
+            <p data-i18n="select_mode">Select Game Mode</p>
+            
+            <button class="btn menu-btn" onclick="startGameMode('story')">
+                <span data-i18n="story_mode">📖 Story Mode</span>
+                <span class="sub-text" id="level-progress-text">Level 1</span>
+                <span class="sub-text" id="max-level-text" style="color: #f1c40f; font-size: 0.8rem; margin-top: 5px;">Record: Level 1</span>
+            </button>
+            <button class="btn menu-btn" onclick="startGameMode('arcade')">
+                <span data-i18n="arcade_mode">⏱️ Arcade Mode</span>
+                <span class="sub-text" data-i18n="arcade_desc">30 Moves - High Score</span>
+            </button>
+            <button class="btn menu-btn relax-btn" onclick="startGameMode('relax')">
+                <span data-i18n="relax_mode">☕ Relax Mode</span>
+                <span class="sub-text" data-i18n="relax_desc">Endless - No pressure</span>
+            </button>
+            <button class="btn menu-btn" style="background-color: #7f8c8d; margin-top: 10px; width: 200px; padding: 10px;" onclick="openSettings()">
+                <span data-i18n="settings_btn">⚙️ Settings</span>
+            </button>
+            
+            <!-- Credits Footer -->
+            <div class="credits-footer">
+                Created by <strong>AnonBOTpl</strong> | 
+                <a href="https://github.com/AnonBOTpl/GemVirus" target="_blank">GitHub Repository</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 data-i18n="settings_title">Settings</h2>
+            
+            <div class="setting-row">
+                <span data-i18n="tile_theme">Tile Theme:</span>
+                <select id="setting-theme" onchange="changeSetting('theme', this.value)">
+                    <option value="white" data-i18n="theme_white">White</option>
+                    <option value="gray" data-i18n="theme_gray">Gray</option>
+                </select>
+            </div>
+            
+            <div class="setting-row">
+                <span data-i18n="board_zoom">Board Zoom:</span>
+                <select id="setting-zoom" onchange="changeSetting('zoom', parseInt(this.value))">
+                    <option value="1">x1 (Normal)</option>
+                    <option value="2">x2 (Large)</option>
+                    <option value="3">x3 (Huge)</option>
+                </select>
+            </div>
+            
+            <div class="setting-row">
+                <span data-i18n="sound_fx">Sound Effects:</span>
+                <select id="setting-sound" onchange="changeSetting('sound', this.value === 'true')">
+                    <option value="true" data-i18n="sound_on">ON</option>
+                    <option value="false" data-i18n="sound_off">OFF</option>
+                </select>
+            </div>
+            
+            <div class="setting-row">
+                <span data-i18n="language">Language:</span>
+                <select id="setting-lang" onchange="changeSetting('lang', this.value)">
+                    <option value="en">English</option>
+                    <option value="pl">Polski</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="closeSettings()" style="margin-top: 15px;" data-i18n="close_btn">Close</button>
+        </div>
+    </div>
+
+    <!-- Gameplay Area -->
+    <div class="game-container hidden" id="gameplay-area">
+        
+        <div id="stats-board">
+            <div class="stat-box" id="score-container"><span data-i18n="score">Score:</span> <span id="score-display">0</span></div>
+            <div class="stat-box hidden" id="best-container"><span data-i18n="best">Best:</span> <span id="best-display">0</span></div>
+            <div class="stat-box hidden" id="goal-container" style="color: #2ecc71;"><span data-i18n="goal">Goal:</span> <span id="goal-display">None</span></div>
+            
+            <div class="stat-box"><span data-i18n="combo">Combo:</span> <span id="combo-display" class="combo-text">1x</span></div>
+            <div class="stat-box" id="moves-container"><span data-i18n="moves">Moves:</span> <span id="moves-display">30</span></div>
+        </div>
+
+        <div id="game-board"></div>
+
+        <div class="bottom-controls">
+            <button id="menu-btn" class="btn" style="background-color: #7f8c8d;" data-i18n="menu_btn">⬅ Menu</button>
+            <button class="btn" style="background-color: #95a5a6; padding: 10px 15px;" onclick="openSettings()">⚙️</button>
+            <button id="restart-btn" class="btn" data-i18n="restart_btn">Restart</button>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="end-title">Game Over!</h2>
+            <p id="end-subtitle" data-i18n="final_score">Your Final Score:</p>
+            <h3 id="final-score-display">0</h3>
+            <p id="new-record-msg" class="hidden" data-i18n="new_record" style="color: #2ecc71; font-weight: bold; font-size: 1.5rem; text-transform: uppercase; margin-top: -10px;">New Record! 🎉</p>
+            
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                <button id="menu-return-btn" class="btn" style="background-color: #7f8c8d;" data-i18n="main_menu">Main Menu</button>
+                <button id="play-again-btn" class="btn" data-i18n="play_again">Play Again</button>
+                <button id="next-level-btn" class="btn hidden" style="background-color: #3498db;" data-i18n="next_level">Next Level ➡</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="globals.js"></script>
+    <script src="language.js"></script>
+    <script src="levels.js"></script>
+    <script src="audio.js"></script>
+    <script src="visuals.js"></script>
+    <script src="logic.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
