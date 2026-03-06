@@ -289,7 +289,7 @@ function checkWinLossConditions() {
         if (scoreMet && iceMet) win = true;
         else if (movesLeft <= 0) lose = true;
     } 
-    else if (gameMode === 'arcade') {
+    else if (gameMode === 'arcade' || gameMode === 'daily') {
         if (movesLeft <= 0) lose = true;
     }
 
