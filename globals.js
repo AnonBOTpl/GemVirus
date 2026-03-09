@@ -36,3 +36,10 @@ let settings = JSON.parse(localStorage.getItem('match3_settings')) || {
 function saveSettings() {
     localStorage.setItem('match3_settings', JSON.stringify(settings));
 }
+
+function getRand() {
+    if (gameMode === 'daily' && typeof seededRandom === 'function') {
+        return seededRandom();
+    }
+    return Math.random();
+}
