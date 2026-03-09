@@ -85,10 +85,7 @@ function startGameMode(mode, levelId = null) {
 
     updateScoreUI(1); 
     generateBoard(iceToSpawn);
-    while (findMatchGroups().length > 0) generateBoard(iceToSpawn);
-    
-    // Ensure initial board is not deadlocked
-    while(getAvailableMoves().length === 0) {
+    while (findMatchGroups().length > 0 || getAvailableMoves().length === 0) {
         generateBoard(iceToSpawn);
     }
     
