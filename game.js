@@ -109,8 +109,8 @@ function generateBoard(iceCount) {
 
     let placed = 0;
     while(placed < iceCount) {
-        let rr = Math.floor(Math.random() * BOARD_SIZE);
-        let cc = Math.floor(Math.random() * BOARD_SIZE);
+        let rr = Math.floor(getRand() * BOARD_SIZE);
+        let cc = Math.floor(getRand() * BOARD_SIZE);
         if (!iceBoard[rr][cc]) {
             iceBoard[rr][cc] = true;
             placed++;
@@ -119,7 +119,7 @@ function generateBoard(iceCount) {
 }
 
 function getRandomGem() {
-    return GEM_TYPES[Math.floor(Math.random() * GEM_TYPES.length)];
+    return GEM_TYPES[Math.floor(getRand() * GEM_TYPES.length)];
 }
 
 function handleTileClick(clickedDomElement) {
@@ -182,7 +182,7 @@ function showHint() {
     const validMoves = getAvailableMoves(); // from logic.js
     if (validMoves.length > 0) {
         // Pick a random valid move to hint
-        const move = validMoves[Math.floor(Math.random() * validMoves.length)];
+        const move = validMoves[Math.floor(getRand() * validMoves.length)];
         const dom1 = domBoard[move[0].r][move[0].c];
         const dom2 = domBoard[move[1].r][move[1].c];
         

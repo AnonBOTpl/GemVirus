@@ -94,6 +94,9 @@ function executeSwapAnimation(tile1, tile2) {
                     if (getBase(board[r][c]) === targetColor || (r===bombCoord.row && c===bombCoord.col)) colorCoords.push({r,c});
                 }
                 groups.push({ color: 'color_bomb', coords: colorCoords, isColorBombTrigger: true });
+                // Fix: Color Bomb double destruction bug. Temporarily turn the Color Bomb into a regular gem
+                // so processDestruction doesn't independently trigger it again.
+                board[bombCoord.row][bombCoord.col] = targetColor;
             }
             processDestruction(groups, 1, [tile1, tile2]);
         } else {
@@ -186,7 +189,7 @@ function processDestruction(groups, comboMultiplier, swapCoords = []) {
         
         if (power === 'bomb') { playSound('explosion'); for(let rr = current.r - 1; rr <= current.r + 1; rr++) for(let cc = current.c - 1; cc <= current.c + 1; cc++) queue.push({r: rr, c: cc}); } 
         else if (power === 'cross') { playSound('explosion'); for(let i = 0; i < BOARD_SIZE; i++) { queue.push({r: current.r, c: i}); queue.push({r: i, c: current.c}); } } 
-        else if (power === 'color') { playSound('electric'); let randomColor = GEM_TYPES[Math.floor(Math.random() * GEM_TYPES.length)]; for(let r=0; r<BOARD_SIZE; r++) for(let c=0; c<BOARD_SIZE; c++) if (getBase(board[r][c]) === randomColor) queue.push({r,c}); }
+        else if (power === 'color') { playSound('electric'); let randomColor = GEM_TYPES[Math.floor(getRand() * GEM_TYPES.length)]; for(let r=0; r<BOARD_SIZE; r++) for(let c=0; c<BOARD_SIZE; c++) if (getBase(board[r][c]) === randomColor) queue.push({r,c}); }
     }
 
     if (iceToBreak.size > 0) {
@@ -262,7 +265,7 @@ function spreadVirusIce() {
         }
     }
     if (candidates.length > 0) {
-        let target = candidates[Math.floor(Math.random() * candidates.length)];
+        let target = candidates[Math.floor(getRand() * candidates.length)];
         iceBoard[target.r][target.c] = true;
         iceRemaining++;
         
@@ -282,6 +285,47 @@ function spreadVirusIce() {
 function checkWinLossConditions() {
     let win = false;
     let lose = false;
+
+    // End-of-Game Powerup Detonation
+    if (movesLeft <= 0 && gameMode !== 'relax') {
+        let powerupsToDetonate = [];
+        for (let r = 0; r < BOARD_SIZE; r++) {
+            for (let c = 0; c < BOARD_SIZE; c++) {
+                if (board[r][c] !== null && getPower(board[r][c]) !== 'none') {
+                    powerupsToDetonate.push({r, c});
+                }
+            }
+        }
+
+        if (powerupsToDetonate.length > 0) {
+            // Found powerups! Detonate the first one we find and wait for cascade to finish.
+            // When processDestruction finishes, it will call checkWinLossConditions again.
+            let firstPowerup = powerupsToDetonate[0];
+            let pType = getPower(board[firstPowerup.r][firstPowerup.c]);
+            let group = { color: 'endgame', coords: [firstPowerup], isColorBombTrigger: false };
+
+            if (pType === 'color') {
+                group.isColorBombTrigger = true;
+                let targetColor = getBase(board[firstPowerup.r][firstPowerup.c]);
+                if (!targetColor) {
+                    targetColor = GEM_TYPES[Math.floor(getRand() * GEM_TYPES.length)];
+                }
+                for(let rr=0; rr<BOARD_SIZE; rr++) {
+                    for(let cc=0; cc<BOARD_SIZE; cc++) {
+                        if (getBase(board[rr][cc]) === targetColor) {
+                            group.coords.push({r: rr, c: cc});
+                        }
+                    }
+                }
+                board[firstPowerup.r][firstPowerup.c] = targetColor;
+            }
+
+            setTimeout(() => {
+                processDestruction([group], 1, []);
+            }, 300);
+            return; // Stop checking win/loss until this cascade finishes
+        }
+    }
 
     if (gameMode === 'story' && currentLevelData) {
         let scoreMet = score >= currentLevelData.targetScore;
@@ -408,7 +452,7 @@ function shuffleBoard() {
     
     // Fisher-Yates shuffle
     for (let i = movableGems.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        const j = Math.floor(getRand() * (i + 1));
         [movableGems[i], movableGems[j]] = [movableGems[j], movableGems[i]];
     }
     
@@ -425,6 +469,9 @@ function shuffleBoard() {
     // Re-render and re-position visually
     createDOMBoard(); 
     
+    // Treat shuffle as an ice-breaking action to prevent immediate virus spread
+    iceBrokenThisTurn = 1;
+
     // If the shuffle created matches or STILL has no moves, resolve it
     const matches = findMatchGroups();
     if (matches.length > 0) {
