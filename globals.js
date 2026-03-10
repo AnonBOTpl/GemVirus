@@ -38,8 +38,8 @@ function saveSettings() {
 }
 
 function getRand() {
-    if (gameMode === 'daily' && typeof seededRandom === 'function') {
-        return seededRandom();
+    if (gameMode === 'daily' && typeof getDailyRandom === 'function') {
+        return getDailyRandom();
     }
     return Math.random();
 }
