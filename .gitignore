@@ -1,0 +1,34 @@
+# --- Prywatne / lokalne ---
+# UWAGA: git nie obsluguje komentarzy w tej samej linii co wzorzec.
+# Komentarz musi byc ZAWSZE w osobnej linii.
+
+# notatki z audytu bezpieczenstwa - nie publikowac
+AUDIT.md
+# kopie zapasowe leaderboarda (zawieraja nicki graczy)
+backup/
+# tymczasowy plik przy testach API
+payload.json
+
+# --- Sekrety ---
+.env
+.env.*
+*.key
+secrets.json
+config.local.js
+
+# --- System / edytory ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# --- Node (na przyszlosc, gdy dojda testy/build) ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+dist/
+coverage/
+.cache/

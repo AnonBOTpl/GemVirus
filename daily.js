@@ -57,7 +57,7 @@ async function submitDailyScore(nick, score) {
         const top = scores.slice(0, 100);
         await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+            headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_API_KEY },
             body: JSON.stringify({ scores: top })
         });
     } catch(e) { console.error('Daily submit error:', e); }

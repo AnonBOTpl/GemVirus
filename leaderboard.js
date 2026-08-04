@@ -1,6 +1,9 @@
 // leaderboard.js
 const JSONBIN_BIN_ID = '69ab414d43b1c97be9bb547b';
-const JSONBIN_API_KEY = '$2a$10$MuOtB.5HKW87SwXwvjAs3.JuHf.s2PDYtL2tN/.60dd1bSLf/i/0C';
+// Access Key (READ + UPDATE only — no DELETE, no CREATE).
+// Nadal widoczny publicznie, ale nie pozwala skasowac bina ani grzebac w koncie.
+// Docelowo: proxy serwerowe, zeby klucz w ogole nie trafial do klienta.
+const JSONBIN_API_KEY = '$2a$10$UfCIixC6Mw9g7rX0XQoky.8JK8nFRBbFrdR2NF/coON/fBdonsDcK';
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 let playerNick = localStorage.getItem('gemvirus_nick') || '';
@@ -34,7 +37,7 @@ function openNickModal(callback) {
 async function fetchScores() {
     try {
         const res = await fetch(JSONBIN_URL + '/latest', {
-            headers: { 'X-Master-Key': JSONBIN_API_KEY }
+            headers: { 'X-Access-Key': JSONBIN_API_KEY }
         });
         const data = await res.json();
         return data.record.scores || [];
@@ -52,7 +55,7 @@ async function submitScore(nick, score, mode) {
         const top = scores.slice(0, 100);
         await fetch(JSONBIN_URL, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+            headers: { 'Content-Type': 'application/json', 'X-Access-Key': JSONBIN_API_KEY },
             body: JSON.stringify({ scores: top })
         });
     } catch(e) { console.error('Leaderboard submit error:', e); }
