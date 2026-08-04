@@ -54,7 +54,10 @@ const TRANSLATIONS = {
         stats_btn: "📊 My Stats",
         daily_btn: "📅 Daily Challenge",
         daily_play: "Play today's challenge!",
-        level_progress: "Level"
+        level_progress: "Level",
+        reset_campaign: "↺ Reset",
+        confirm_quit: "Are you sure? The current game will be lost.",
+        confirm_reset: "Reset campaign progress and start from level 1?\n\nYour record stays untouched."
     },
     pl: {
         title_main: "GEM",
@@ -108,7 +111,10 @@ const TRANSLATIONS = {
         stats_btn: "📊 Moje Statystyki",
         daily_btn: "📅 Wyzwanie Dnia",
         daily_play: "Zagraj dzisiejsze wyzwanie!",
-        level_progress: "Poziom"
+        level_progress: "Poziom",
+        reset_campaign: "↺ Reset",
+        confirm_quit: "Jesteś pewien? Bieżąca gra zostanie utracona.",
+        confirm_reset: "Zresetować postęp kampanii i zacząć od poziomu 1?\n\nTwój rekord pozostanie nienaruszony."
     }
 };
 

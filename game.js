@@ -213,30 +213,43 @@ function returnToMenu() {
     initAudio();
     if (hintTimer) clearTimeout(hintTimer);
     
-    // Warn if quitting a LIVE match (Arcade/Story)
+    // Ostrzegamy tylko o utracie TRWAJACEJ partii - postep kampanii jest juz
+    // zapisywany, wiec powrot do menu go nie kasuje.
     let shouldWarn = !isGameOver && (gameMode === 'story' || gameMode === 'arcade');
-    
-    // Also warn if they are in the post-game screen of Story mode and have made progress
-    if (isGameOver && gameMode === 'story' && unlockedLevel > 1) {
-        shouldWarn = true;
-    }
 
     if (shouldWarn) {
-        const confirmExit = confirm(t('language') === 'Polski' ? "Jesteś pewien? Stracisz postęp w grze/kampanii." : "Are you sure? You will lose your game/campaign progress.");
+        const confirmExit = confirm(t('confirm_quit'));
         if (!confirmExit) return;
-    }
-
-    if (gameMode === 'story') {
-        unlockedLevel = 1;
     }
 
     document.getElementById('main-menu').classList.remove('hidden');
     document.getElementById('gameplay-area').classList.add('hidden');
     document.getElementById('game-over-modal').classList.add('hidden');
     
+    updateCampaignUI();
+    updateDailyStatus();
+}
+
+// Odswieza teksty i widocznosc przycisku resetu na kafelku kampanii.
+function updateCampaignUI() {
     document.getElementById('level-progress-text').innerText = `${t('lvl_text')} ${unlockedLevel}`;
     document.getElementById('max-level-text').innerText = `${t('max_level')} ${maxLevelReached}`;
-    updateDailyStatus();
+
+    // Reset ma sens tylko wtedy, gdy jest co resetowac.
+    const resetBtn = document.getElementById('reset-campaign-btn');
+    if (resetBtn) resetBtn.classList.toggle('hidden', unlockedLevel <= 1);
+}
+
+// Reset kampanii z potwierdzeniem (przycisk w kafelku Story Mode).
+function confirmResetCampaign(event) {
+    // Kafelek jest przyciskiem startujacym gre - nie pozwalamy, zeby klikniecie
+    // resetu odpalilo takze rozgrywke.
+    if (event) event.stopPropagation();
+    initAudio();
+    if (confirm(t('confirm_reset'))) {
+        resetCampaignProgress();
+        updateCampaignUI();
+    }
 }
 
 // --- SETTINGS LOGIC ---
@@ -286,4 +299,5 @@ document.getElementById('menu-return-btn').addEventListener('click', returnToMen
 
 document.addEventListener('DOMContentLoaded', () => {
     applySettings(); // Boot initial settings
+    updateCampaignUI(); // Pokaz zapisany postep i ewentualny przycisk resetu
 });

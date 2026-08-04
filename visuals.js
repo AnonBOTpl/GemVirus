@@ -148,8 +148,10 @@ function showGameOver(isVictory = false) {
                 // Option 4: Save max level reached
                 if (unlockedLevel > maxLevelReached) {
                     maxLevelReached = unlockedLevel;
-                    localStorage.setItem('match3_maxLevel', maxLevelReached);
                 }
+                // Utrwalamy postep kampanii, zeby przetrwal powrot do menu
+                // i zamkniecie strony.
+                saveCampaignProgress();
             }
             
             if (currentLevelData.id < STORY_LEVELS.length) {

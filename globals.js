@@ -16,8 +16,24 @@ let score = 0;
 let movesLeft = 0;
 
 let bestScore = localStorage.getItem('match3_bestScore') || 0; 
-let unlockedLevel = 1; 
+// Postep kampanii jest teraz TRWALY - zapisywany w localStorage, zeby powrot do
+// menu ani zamkniecie strony go nie kasowaly.
+// Migracja: gracze sprzed tej zmiany maja zapisany tylko 'match3_maxLevel'
+// (rekord) - traktujemy go jako punkt startowy, zeby nikt nie stracil postepu.
 let maxLevelReached = parseInt(localStorage.getItem('match3_maxLevel')) || 1;
+let unlockedLevel = parseInt(localStorage.getItem('match3_unlockedLevel')) || maxLevelReached || 1;
+
+function saveCampaignProgress() {
+    localStorage.setItem('match3_unlockedLevel', unlockedLevel);
+    localStorage.setItem('match3_maxLevel', maxLevelReached);
+}
+
+// Reset kampanii - gracz zaczyna fabule od poczatku.
+// Rekord (maxLevelReached) celowo ZOSTAJE, to pamiatka osiagniecia.
+function resetCampaignProgress() {
+    unlockedLevel = 1;
+    localStorage.setItem('match3_unlockedLevel', 1);
+}
 let currentLevelData = null;
 
 let iceBrokenThisTurn = 0;
