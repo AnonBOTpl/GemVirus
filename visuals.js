@@ -106,6 +106,11 @@ function showGameOver(isVictory = false) {
     isGameOver = true;
     isProcessingSwap = true; 
     
+    // Detonacja skonczona - chowamy "Przyspiesz" i wracamy do normalnego tempa.
+    animSpeed = 1;
+    const skipBtn = document.getElementById('skip-endgame-btn');
+    if (skipBtn) skipBtn.classList.add('hidden');
+    
     const modal = document.getElementById('game-over-modal');
     const title = document.getElementById('end-title');
     const subtitle = document.getElementById('end-subtitle');

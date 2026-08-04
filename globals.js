@@ -41,6 +41,25 @@ let iceRemaining = 0;
 
 let hintTimer = null; // Timer for Hint System
 
+// --- PRZYSPIESZANIE ANIMACJI (przycisk "Pomin" przy detonacji koncowej) ---
+// animSpeed = 1 to normalne tempo gry. Gdy gracz wcisnie "Pomin", ustawiamy
+// wieksza wartosc, przez co wszystkie opoznienia animacji sa krotsze.
+// UWAGA: to zmienia TYLKO szybkosc animacji. Wybuchy i naliczanie punktow
+// przebiegaja dokladnie tak samo, wiec koncowy wynik jest identyczny.
+let animSpeed = 1;
+
+// Kazde opoznienie animacji przepuszczamy przez ta funkcje.
+function animDelay(ms) {
+    return Math.max(1, Math.round(ms / animSpeed));
+}
+
+// Wywolywane przy starcie kazdej rozgrywki - wracamy do normalnego tempa.
+function resetAnimSpeed() {
+    animSpeed = 1;
+    const btn = document.getElementById('skip-endgame-btn');
+    if (btn) btn.classList.add('hidden');
+}
+
 // Zapis i odczyt ustawień
 let settings = JSON.parse(localStorage.getItem('match3_settings')) || {
     theme: 'white', 

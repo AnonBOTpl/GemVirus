@@ -1,4 +1,13 @@
 // logic.js
+//
+// UWAGA DLA MODYFIKUJACEGO findMatchGroups():
+// Licznik `matchLen` startuje od 1 i jest zwiekszany, gdy BIEZACY klejnot jest
+// taki sam jak NASTEPNY. Oznacza to, ze w chwili domkniecia serii `matchLen`
+// zawiera juz poprawna dlugosc, a wspolrzedne cofamy o `c - i` / `r - i`
+// (biezaca pozycja jest ostatnim elementem serii).
+// Ten uklad jest poprawny, ale latwo go zepsuc o jeden przy przepisywaniu -
+// jesli zmieniasz warunek lub start licznika, sprawdz rownoczesnie oba
+// przebiegi (poziomy i pionowy) oraz progi 3 / 4 / 5 nadajace power-upy.
 function findMatchGroups() {
     let horizontalLines = []; let verticalLines = [];
     for (let r = 0; r < BOARD_SIZE; r++) {
@@ -150,7 +159,7 @@ function handleEpicCombo(tile1, tile2, gem1, gem2) {
         }
         createFloatingText(tile2.row, tile2.col, "COMBO BOMB!");
     }
-    setTimeout(() => { processDestruction([group], 1, []); }, 400);
+    setTimeout(() => { processDestruction([group], 1, []); }, animDelay(400));
 }
 
 function processDestruction(groups, comboMultiplier, swapCoords = []) {
@@ -199,7 +208,7 @@ function processDestruction(groups, comboMultiplier, swapCoords = []) {
             let r = parseInt(key.split(',')[0]); let c = parseInt(key.split(',')[1]);
             iceBoard[r][c] = false; iceRemaining--;
             const domTile = domBoard[r][c];
-            if (domTile) { domTile.classList.add('ice-break'); setTimeout(() => { domTile.classList.remove('ice-break'); applyGemVisuals(domTile, r, c); }, 300); }
+            if (domTile) { domTile.classList.add('ice-break'); setTimeout(() => { domTile.classList.remove('ice-break'); applyGemVisuals(domTile, r, c); }, animDelay(300)); }
             score += 50; createFloatingText(r, c, "+50", "ice-text");
         });
     }
@@ -214,7 +223,7 @@ function processDestruction(groups, comboMultiplier, swapCoords = []) {
     finalDestroyList.forEach(coord => {
         board[coord.r][coord.c] = null;
         const domTile = domBoard[coord.r][coord.c];
-        if (domTile) { domTile.classList.add('fade-out'); setTimeout(() => { domTile.remove(); }, 300); }
+        if (domTile) { domTile.classList.add('fade-out'); setTimeout(() => { domTile.remove(); }, animDelay(300)); }
         domBoard[coord.r][coord.c] = null;
     });
 
@@ -223,7 +232,7 @@ function processDestruction(groups, comboMultiplier, swapCoords = []) {
         const tile = document.createElement('div'); applyGemVisuals(tile, spawn.r, spawn.c); 
         tile.addEventListener('click', function() { handleTileClick(this); });
         document.getElementById('game-board').appendChild(tile); domBoard[spawn.r][spawn.c] = tile;
-        updateTilePosition(tile, spawn.r, spawn.c); tile.style.transform = 'scale(0)'; setTimeout(() => { tile.style.transform = 'scale(1)'; }, 50);
+        updateTilePosition(tile, spawn.r, spawn.c); tile.style.transform = 'scale(0)'; setTimeout(() => { tile.style.transform = 'scale(1)'; }, animDelay(50));
     });
 
     setTimeout(() => { applyGravity(); setTimeout(() => { spawnNewGems();
@@ -244,10 +253,10 @@ function processDestruction(groups, comboMultiplier, swapCoords = []) {
                     if (!isGameOver) {
                         checkDeadlockAndShuffle();
                     }
-                }, 500); 
+                }, animDelay(500)); 
             }
-        }, 350); 
-    }, 350); }, 300);
+        }, animDelay(350)); 
+    }, animDelay(350)); }, animDelay(300));
 }
 
 function spreadVirusIce() {
@@ -320,9 +329,16 @@ function checkWinLossConditions() {
                 board[firstPowerup.r][firstPowerup.c] = targetColor;
             }
 
+            // Pokazujemy przycisk "Pomin", gdy zostalo wiecej niz jeden power-up
+            // do zdetonowania - to wtedy czekanie robi sie zauwazalne.
+            const skipBtn = document.getElementById('skip-endgame-btn');
+            if (skipBtn && powerupsToDetonate.length > 1 && animSpeed === 1) {
+                skipBtn.classList.remove('hidden');
+            }
+
             setTimeout(() => {
                 processDestruction([group], 1, []);
-            }, 300);
+            }, animDelay(300));
             return; // Stop checking win/loss until this cascade finishes
         }
     }

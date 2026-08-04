@@ -161,6 +161,11 @@
 
         <div id="game-board"></div>
 
+        <!-- Przyspieszenie koncowej detonacji power-upow. Pokazuje sie sam,
+             tylko gdy zostalo wiecej niz jeden power-up do wysadzenia. -->
+        <button id="skip-endgame-btn" class="btn hidden" data-i18n="skip_endgame"
+                onclick="skipEndgameAnimation()">⏩ Przyspiesz</button>
+
         <div class="bottom-controls">
             <button id="menu-btn" class="btn" style="background-color: #7f8c8d;" data-i18n="menu_btn">⬅ Menu</button>
             <button class="btn" style="background-color: #95a5a6; padding: 10px 15px;" onclick="openSettings()">⚙️</button>

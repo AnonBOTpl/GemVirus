@@ -25,12 +25,22 @@ function startDailyChallenge() {
     startGameMode('daily');
 }
 
+// Przyspiesza koncowa detonacje power-upow. NIE pomija wybuchow - one nadal
+// zachodza po kolei i naliczaja punkty tak samo, tylko animacje leca szybciej.
+// Dzieki temu koncowy wynik jest identyczny, jakby gracz obejrzal calosc.
+function skipEndgameAnimation() {
+    animSpeed = 8;
+    const btn = document.getElementById('skip-endgame-btn');
+    if (btn) btn.classList.add('hidden');
+}
+
 function startGameMode(mode, levelId = null) {
     if (mode === 'arcade' && !getNick()) {
         openNickModal(() => startGameMode(mode, levelId));
         return;
     }
     initAudio();
+    resetAnimSpeed(); // wracamy do normalnego tempa animacji i chowamy "Przyspiesz"
     gameMode = mode;
     score = 0;
     iceRemaining = 0;
@@ -289,7 +299,7 @@ function applySettings() {
 // Boot up listeners
 document.body.addEventListener('click', initAudio, { once: true });
 document.getElementById('restart-btn').addEventListener('click', () => { document.getElementById('game-over-modal').classList.add('hidden'); startGameMode(gameMode, currentLevelData?.id); });
-document.getElementById('play-again-btn').addEventListener('click', () => { startGameMode(gameMode, currentLevelData?.id); });
+document.getElementById('play-again-btn').addEventListener('click', () => { document.getElementById('game-over-modal').classList.add('hidden'); startGameMode(gameMode, currentLevelData?.id); });
 document.getElementById('next-level-btn').addEventListener('click', () => {
     document.getElementById('game-over-modal').classList.add('hidden');
     startGameMode('story', currentLevelData.id + 1);
