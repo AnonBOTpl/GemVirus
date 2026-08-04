@@ -8,6 +8,24 @@ const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 let playerNick = localStorage.getItem('gemvirus_nick') || '';
 
+// Zabezpieczenie XSS: zamienia znaki specjalne HTML na ich bezpieczne odpowiedniki,
+// dzieki czemu nick gracza jest zawsze wyswietlany jako TEKST, a nigdy wykonywany
+// jako kod. Uzywac ZAWSZE przy wstawianiu danych od gracza do innerHTML.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"'`=\/]/g, ch => ({
+        '&': '&amp;',  '<': '&lt;',   '>': '&gt;',
+        '"': '&quot;', "'": '&#39;',  '`': '&#96;',
+        '=': '&#61;',  '/': '&#47;'
+    })[ch]);
+}
+
+// Wynik moze przyjsc z sieci jako tekst - wymuszamy liczbe, zeby uniknac bledu
+// przy formatowaniu i zeby nikt nie przemycil kodu w polu ze wynikiem.
+function formatScore(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n.toLocaleString() : '0';
+}
+
 function getNick() { return playerNick; }
 
 function openNickModal(callback) {
@@ -94,9 +112,9 @@ async function showLeaderboard(mode = 'arcade') {
         const isMe = s.nick === playerNick;
         return `<tr style="${isMe ? 'color:#2ecc71;font-weight:bold;' : ''}">
             <td style="padding:6px 10px;">${medal}</td>
-            <td style="padding:6px 10px;">${s.nick}</td>
-            <td style="padding:6px 10px;text-align:right;">${s.score.toLocaleString()}</td>
-            <td style="padding:6px 10px;color:#95a5a6;font-size:0.85rem;">${s.date}</td>
+            <td style="padding:6px 10px;">${escapeHtml(s.nick)}</td>
+            <td style="padding:6px 10px;text-align:right;">${formatScore(s.score)}</td>
+            <td style="padding:6px 10px;color:#95a5a6;font-size:0.85rem;">${escapeHtml(s.date)}</td>
         </tr>`;
     }).join('');
 }

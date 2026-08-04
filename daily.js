@@ -88,9 +88,9 @@ async function showDailyLeaderboard() {
         const isMe = s.nick === playerNick;
         return `<tr style="${isMe ? 'color:#2ecc71;font-weight:bold;' : ''}">
             <td style="padding:6px 10px;">${medal}</td>
-            <td style="padding:6px 10px;">${s.nick}</td>
-            <td style="padding:6px 10px;text-align:right;">${s.score}</td>
-            <td style="padding:6px 10px;color:#95a5a6;font-size:0.85rem;">${s.date}</td>
+            <td style="padding:6px 10px;">${escapeHtml(s.nick)}</td>
+            <td style="padding:6px 10px;text-align:right;">${formatScore(s.score)}</td>
+            <td style="padding:6px 10px;color:#95a5a6;font-size:0.85rem;">${escapeHtml(s.date)}</td>
         </tr>`;
     }).join('');
 }
