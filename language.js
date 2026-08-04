@@ -57,6 +57,21 @@ const TRANSLATIONS = {
         level_progress: "Level",
         reset_campaign: "↺ Reset",
         skip_endgame: "⏩ Speed up",
+        loading: "⏳ Loading...",
+        no_scores: "No scores yet!",
+        no_scores_daily: "No scores yet today. Be the first!",
+        daily_done: "✅ Done! Your score:",
+        stat_games: "Games Played",
+        stat_best_arcade: "Best Arcade",
+        stat_avg: "Avg Score",
+        stat_best_daily: "Best Daily",
+        stat_levels: "Lvls Completed",
+        stat_fav: "Fav Mode",
+        th_rank: "#",
+        th_nick: "Nick",
+        th_score: "Score",
+        th_date: "Date",
+        enter_nick: "👤 Enter Your Nick",
         confirm_quit: "Are you sure? The current game will be lost.",
         confirm_reset: "Reset campaign progress and start from level 1?\n\nYour record stays untouched."
     },
@@ -115,6 +130,21 @@ const TRANSLATIONS = {
         level_progress: "Poziom",
         reset_campaign: "↺ Reset",
         skip_endgame: "⏩ Przyspiesz",
+        loading: "⏳ Ładowanie...",
+        no_scores: "Brak wyników!",
+        no_scores_daily: "Brak wyników na dziś. Bądź pierwszy!",
+        daily_done: "✅ Ukończone! Twój wynik:",
+        stat_games: "Rozegrane Gry",
+        stat_best_arcade: "Rekord Arcade",
+        stat_avg: "Średni Wynik",
+        stat_best_daily: "Rekord Dnia",
+        stat_levels: "Ukończone Poziomy",
+        stat_fav: "Ulubiony Tryb",
+        th_rank: "#",
+        th_nick: "Nick",
+        th_score: "Wynik",
+        th_date: "Data",
+        enter_nick: "👤 Podaj Swój Nick",
         confirm_quit: "Jesteś pewien? Bieżąca gra zostanie utracona.",
         confirm_reset: "Zresetować postęp kampanii i zacząć od poziomu 1?\n\nTwój rekord pozostanie nienaruszony."
     }
@@ -141,5 +171,14 @@ function updateTranslations() {
     const lvlText = document.getElementById('level-progress-text');
     if (lvlText) {
         lvlText.innerText = `${t('lvl_text')} ${unlockedLevel}`;
+    }
+
+    // Statystyki i status Daily sa rysowane z JS, wiec po zmianie jezyka
+    // trzeba je przerysowac - inaczej zostana w poprzednim jezyku.
+    if (typeof updateDailyStatus === 'function') updateDailyStatus();
+    const statsModal = document.getElementById('stats-modal');
+    if (statsModal && !statsModal.classList.contains('hidden')
+        && typeof showStatsModal === 'function') {
+        showStatsModal();
     }
 }

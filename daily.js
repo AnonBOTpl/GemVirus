@@ -69,7 +69,7 @@ async function showDailyLeaderboard() {
     const title = document.getElementById('leaderboard-title');
     const filterBtns = document.getElementById('lb-filter-btns');
     modal.classList.remove('hidden');
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">⏳ Loading...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">${t('loading')}</td></tr>`;
 
     const today = getDailyDateKey();
     title.innerText = `📅 Daily Challenge — ${today}`;
@@ -79,7 +79,7 @@ async function showDailyLeaderboard() {
     const daily = scores.filter(s => s.mode === 'daily' && s.date === today);
 
     if (daily.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">No scores yet today. Be the first!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">${t('no_scores_daily')}</td></tr>`;
         return;
     }
 
@@ -139,12 +139,12 @@ function showStatsModal() {
     document.getElementById('stats-modal').classList.remove('hidden');
     document.getElementById('stats-content').innerHTML = `
         <div class="stats-grid">
-            <div class="stat-card"><div class="stat-val">${stats.gamesPlayed}</div><div class="stat-lbl">Games Played</div></div>
-            <div class="stat-card"><div class="stat-val">${stats.bestArcade.toLocaleString()}</div><div class="stat-lbl">Best Arcade</div></div>
-            <div class="stat-card"><div class="stat-val">${avg.toLocaleString()}</div><div class="stat-lbl">Avg Score</div></div>
-            <div class="stat-card"><div class="stat-val">${stats.bestDaily.toLocaleString()}</div><div class="stat-lbl">Best Daily</div></div>
-            <div class="stat-card"><div class="stat-val">${stats.levelsCompleted}</div><div class="stat-lbl">Lvls Completed</div></div>
-            <div class="stat-card"><div class="stat-val">${favLabel}</div><div class="stat-lbl">Fav Mode</div></div>
+            <div class="stat-card"><div class="stat-val">${stats.gamesPlayed}</div><div class="stat-lbl">${t('stat_games')}</div></div>
+            <div class="stat-card"><div class="stat-val">${stats.bestArcade.toLocaleString()}</div><div class="stat-lbl">${t('stat_best_arcade')}</div></div>
+            <div class="stat-card"><div class="stat-val">${avg.toLocaleString()}</div><div class="stat-lbl">${t('stat_avg')}</div></div>
+            <div class="stat-card"><div class="stat-val">${stats.bestDaily.toLocaleString()}</div><div class="stat-lbl">${t('stat_best_daily')}</div></div>
+            <div class="stat-card"><div class="stat-val">${stats.levelsCompleted}</div><div class="stat-lbl">${t('stat_levels')}</div></div>
+            <div class="stat-card"><div class="stat-val">${favLabel}</div><div class="stat-lbl">${t('stat_fav')}</div></div>
         </div>
     `;
 }

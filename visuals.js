@@ -49,7 +49,7 @@ function createDOMBoard() {
         for (let c = 0; c < BOARD_SIZE; c++) {
             const tile = document.createElement('div');
             applyGemVisuals(tile, r, c);
-            tile.addEventListener('click', function() { handleTileClick(this); });
+            attachTileControls(tile);
             boardElement.appendChild(tile);
             domRow.push(tile);
             updateTilePosition(tile, r, c);

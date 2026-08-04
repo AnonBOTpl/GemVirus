@@ -4,10 +4,10 @@ function updateDailyStatus() {
     if (!el) return;
     if (hasDailyBeenPlayed()) {
         const s = getDailyScore();
-        el.innerText = `✅ Done! Your score: ${s ? s.toLocaleString() : '?'}`;
+        el.innerText = `${t('daily_done')} ${s ? formatScore(s) : '?'}`;
         el.style.color = '#2ecc71';
     } else {
-        el.innerText = "Play today's challenge!";
+        el.innerText = t('daily_play');
         el.style.color = '';
     }
 }
@@ -170,6 +170,127 @@ function handleTileClick(clickedDomElement) {
     }
 }
 
+// --- STEROWANIE PRZESUNIECIEM PALCA / MYSZA (swipe) ---
+// Dziala OBOK dotychczasowego klikania - klik-klik nadal dziala tak samo.
+// Zasada: zapamietujemy punkt startu, a po puszczeniu sprawdzamy, w ktora
+// strone gracz pociagnal i zamieniamy klejnot z sasiadem w tym kierunku.
+let swipeStart = null;
+let swipeJustHappened = false; // blokuje klik doklejany przez przegladarke po gescie
+const SWIPE_MIN_PX = 20; // ponizej tego traktujemy gest jako zwykly klik
+
+function getSwipePoint(ev) {
+    const p = (ev.changedTouches && ev.changedTouches[0]) || ev;
+    return { x: p.clientX, y: p.clientY };
+}
+
+function onSwipeStart(ev, domTile) {
+    if (isProcessingSwap || isGameOver) return;
+    const p = getSwipePoint(ev);
+    swipeStart = { x: p.x, y: p.y, tile: domTile };
+
+    // Wizualne "zlapanie" klejnotu - obwodka pojawia sie od razu.
+    const r = parseInt(domTile.dataset.row);
+    const c = parseInt(domTile.dataset.col);
+    if (!iceBoard[r][c]) domTile.classList.add('grabbed');
+}
+
+// Podglad kierunku w trakcie ciagniecia: slabsza obwodka na sasiedzie,
+// w ktorego strone gracz aktualnie ciagnie.
+function onSwipeMove(ev) {
+    if (!swipeStart) return;
+    const p = getSwipePoint(ev);
+    const dx = p.x - swipeStart.x;
+    const dy = p.y - swipeStart.y;
+
+    clearSwipeTargetHighlight();
+    if (Math.abs(dx) < SWIPE_MIN_PX && Math.abs(dy) < SWIPE_MIN_PX) return;
+
+    const t = getSwipeTarget(swipeStart.tile, dx, dy);
+    if (!t) return;
+    const dom = document.querySelector(`.tile[data-row="${t.row}"][data-col="${t.col}"]`);
+    if (dom) dom.classList.add('swipe-target');
+}
+
+// Wspolne dla podgladu i wykonania ruchu: sasiad w dominujacym kierunku.
+function getSwipeTarget(startTile, dx, dy) {
+    const r = parseInt(startTile.dataset.row);
+    const c = parseInt(startTile.dataset.col);
+    let target;
+    if (Math.abs(dx) > Math.abs(dy)) {
+        target = { row: r, col: c + (dx > 0 ? 1 : -1) };
+    } else {
+        target = { row: r + (dy > 0 ? 1 : -1), col: c };
+    }
+    if (target.row < 0 || target.row >= BOARD_SIZE) return null;
+    if (target.col < 0 || target.col >= BOARD_SIZE) return null;
+    if (iceBoard[target.row][target.col]) return null;
+    return target;
+}
+
+function clearSwipeTargetHighlight() {
+    document.querySelectorAll('.tile.swipe-target')
+        .forEach(el => el.classList.remove('swipe-target'));
+}
+
+// Sprzata obie obwodki gestu (chwyt + podglad celu).
+function clearSwipeHighlights() {
+    document.querySelectorAll('.tile.grabbed')
+        .forEach(el => el.classList.remove('grabbed'));
+    clearSwipeTargetHighlight();
+}
+
+function onSwipeEnd(ev) {
+    if (!swipeStart) return;
+    const start = swipeStart;
+    swipeStart = null;
+    clearSwipeHighlights(); // obwodki znikaja z chwila puszczenia
+
+    if (isProcessingSwap || isGameOver) return;
+
+    const p = getSwipePoint(ev);
+    const dx = p.x - start.x;
+    const dy = p.y - start.y;
+
+    // Za krotki ruch = to byl klik, obsluzy go handleTileClick.
+    if (Math.abs(dx) < SWIPE_MIN_PX && Math.abs(dy) < SWIPE_MIN_PX) return;
+
+    const r = parseInt(start.tile.dataset.row);
+    const c = parseInt(start.tile.dataset.col);
+    if (iceBoard[r][c]) {
+        playSound('error');
+        start.tile.classList.add('shake');
+        setTimeout(() => start.tile.classList.remove('shake'), 300);
+        return;
+    }
+
+    const target = getSwipeTarget(start.tile, dx, dy);
+    if (!target) {
+        playSound('error');
+        return;
+    }
+
+    // Gest zastepuje ewentualne wczesniejsze zaznaczenie.
+    swipeJustHappened = true;
+    selectedTile = null;
+    clearHighlights();
+    resetHintTimer();
+    playSound('swap');
+    executeSwapAnimation({ row: r, col: c }, target);
+}
+
+// Podpinane do kazdego kafelka przy tworzeniu planszy.
+function attachTileControls(tile) {
+    tile.addEventListener('click', function() {
+        // Po przesunieciu przegladarka i tak wysyla klik - ignorujemy go,
+        // zeby gest nie zaznaczyl przy okazji kolejnego klejnotu.
+        if (swipeJustHappened) { swipeJustHappened = false; return; }
+        handleTileClick(this);
+    });
+    tile.addEventListener('pointerdown', function(ev) { onSwipeStart(ev, this); });
+    tile.addEventListener('pointerup', onSwipeEnd);
+    tile.addEventListener('pointercancel', () => { swipeStart = null; clearSwipeHighlights(); });
+}
+
 // --- OPTION 2: HINT SYSTEM ---
 function resetHintTimer() {
     if (hintTimer) clearTimeout(hintTimer);
@@ -298,6 +419,12 @@ function applySettings() {
 
 // Boot up listeners
 document.body.addEventListener('click', initAudio, { once: true });
+// Puszczenie przycisku/palca poza plansza konczy gest - inaczej zostalby
+// "zawieszony" i mieszal przy kolejnym ruchu.
+document.addEventListener('pointerup', onSwipeEnd);
+// Podglad kierunku - sledzimy globalnie, bo kursor w trakcie ciagniecia
+// wychodzi poza kafelek, na ktorym gest sie zaczal.
+document.addEventListener('pointermove', onSwipeMove);
 document.getElementById('restart-btn').addEventListener('click', () => { document.getElementById('game-over-modal').classList.add('hidden'); startGameMode(gameMode, currentLevelData?.id); });
 document.getElementById('play-again-btn').addEventListener('click', () => { document.getElementById('game-over-modal').classList.add('hidden'); startGameMode(gameMode, currentLevelData?.id); });
 document.getElementById('next-level-btn').addEventListener('click', () => {

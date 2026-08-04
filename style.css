@@ -83,10 +83,17 @@ body.zoom-3 #game-board { max-width: 900px; max-height: 900px; width: 98vw; heig
 body.zoom-3 .bottom-controls { max-width: 900px; }
 
 /* Tiles */
-.tile { position: absolute; width: calc(100% / 8 - 4px); height: calc(100% / 8 - 4px); margin: 2px; background-color: #ecf0f1; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; user-select: none; box-shadow: 0 4px 0px #bdc3c7, inset 0 -2px 5px rgba(0,0,0,0.1); transition: top 0.3s ease-in-out, left 0.3s ease-in-out, opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s, box-shadow 0.1s; }
+/* touch-action: none - bez tego przesuniecie palcem po planszy przewija strone
+   zamiast wykonac ruch. -webkit-user-drag blokuje "przeciaganie" na PC. */
+.tile { position: absolute; touch-action: none; -webkit-user-drag: none; width: calc(100% / 8 - 4px); height: calc(100% / 8 - 4px); margin: 2px; background-color: #ecf0f1; border-radius: 4px; display: flex; justify-content: center; align-items: center; font-size: 2rem; cursor: pointer; user-select: none; box-shadow: 0 4px 0px #bdc3c7, inset 0 -2px 5px rgba(0,0,0,0.1); transition: top 0.3s ease-in-out, left 0.3s ease-in-out, opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s, box-shadow 0.1s; }
 .tile:active { transform: translateY(4px) scale(0.95); box-shadow: 0 0px 0px #bdc3c7, inset 0 -2px 5px rgba(0,0,0,0.1); }
 .tile:hover { filter: brightness(1.1); }
 .tile.selected { border: 3px solid #e74c3c; background-color: #fff; transform: scale(0.90); z-index: 10; box-shadow: 0 0px 15px rgba(231, 76, 60, 0.5); }
+/* Obwodki przy przesuwaniu (swipe/drag):
+   .grabbed     - klejnot chwycony, mocna obwodka jak przy zaznaczeniu klikiem
+   .swipe-target- sasiad, w ktorego strone ciagniemy, slabsze podswietlenie */
+.tile.grabbed { border: 3px solid #e74c3c; background-color: #fff; transform: scale(0.90); z-index: 10; box-shadow: 0 0px 15px rgba(231, 76, 60, 0.5); }
+.tile.swipe-target { border: 3px dashed rgba(231, 76, 60, 0.55); transform: scale(0.95); z-index: 9; box-shadow: 0 0px 10px rgba(231, 76, 60, 0.25); }
 .tile.fade-out { opacity: 0; transform: scale(1.5) rotate(15deg); filter: brightness(2); z-index: 20; }
 
 /* --- THEME SYSTEM --- */

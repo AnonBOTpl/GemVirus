@@ -84,7 +84,7 @@ async function showLeaderboard(mode = 'arcade') {
     const tbody = document.getElementById('leaderboard-tbody');
     const title = document.getElementById('leaderboard-title');
     modal.classList.remove('hidden');
-    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">⏳ Loading...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">${t('loading')}</td></tr>`;
 
     // Update active filter button
     document.querySelectorAll('.lb-filter-btn').forEach(btn => {
@@ -103,7 +103,7 @@ async function showLeaderboard(mode = 'arcade') {
     }
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">No scores yet!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;padding:20px;">${t('no_scores')}</td></tr>`;
         return;
     }
 

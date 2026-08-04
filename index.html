@@ -63,7 +63,7 @@
     <!-- Nick Modal -->
     <div id="nick-modal" class="modal hidden">
         <div class="modal-content">
-            <h2>👤 Enter Your Nick</h2>
+            <h2 data-i18n="enter_nick">👤 Enter Your Nick</h2>
             <p style="color:#95a5a6; margin-bottom: 15px;">Used for the leaderboard. Max 20 characters.</p>
             <input id="nick-input" type="text" maxlength="20" placeholder="Your nick..."
                 style="padding: 10px 15px; font-size: 1.1rem; border-radius: 8px; border: 2px solid #3498db;
@@ -84,9 +84,9 @@
                 <thead>
                     <tr style="color:#95a5a6; font-size:0.85rem; border-bottom: 1px solid #34495e;">
                         <th style="padding: 6px 10px; text-align:left;">#</th>
-                        <th style="padding: 6px 10px; text-align:left;">Nick</th>
-                        <th style="padding: 6px 10px; text-align:right;">Score</th>
-                        <th style="padding: 6px 10px; text-align:left;">Date</th>
+                        <th style="padding: 6px 10px; text-align:left;" data-i18n="th_nick">Nick</th>
+                        <th style="padding: 6px 10px; text-align:right;" data-i18n="th_score">Score</th>
+                        <th style="padding: 6px 10px; text-align:left;" data-i18n="th_date">Date</th>
                     </tr>
                 </thead>
                 <tbody id="leaderboard-tbody"></tbody>

@@ -230,7 +230,7 @@ function processDestruction(groups, comboMultiplier, swapCoords = []) {
     pendingSpawns.forEach(spawn => {
         board[spawn.r][spawn.c] = spawn.gem; 
         const tile = document.createElement('div'); applyGemVisuals(tile, spawn.r, spawn.c); 
-        tile.addEventListener('click', function() { handleTileClick(this); });
+        attachTileControls(tile);
         document.getElementById('game-board').appendChild(tile); domBoard[spawn.r][spawn.c] = tile;
         updateTilePosition(tile, spawn.r, spawn.c); tile.style.transform = 'scale(0)'; setTimeout(() => { tile.style.transform = 'scale(1)'; }, animDelay(50));
     });
@@ -381,7 +381,7 @@ function spawnNewGems() {
             if (board[r][c] === null && !iceBoard[r][c]) {
                 const newGem = getRandomGem(); board[r][c] = newGem;
                 const tile = document.createElement('div'); applyGemVisuals(tile, r, c);
-                tile.addEventListener('click', function() { handleTileClick(this); });
+                attachTileControls(tile);
                 tile.style.top = `${(r - BOARD_SIZE) * 12.5}%`; tile.style.left = `${c * 12.5}%`;
                 boardElement.appendChild(tile); domBoard[r][c] = tile;
                 tile.offsetHeight; updateTilePosition(tile, r, c);
