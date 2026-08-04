@@ -35,15 +35,17 @@
 - **📊 Player Stats:** Track your games played, best scores, average score, levels completed and favourite mode.
 - **🎉 Confetti:** Celebrate new records and level completions in style.
 - **📱 PWA Support:** Install GemVirus on your phone or desktop like a native app — works offline too.
+- **🖱️ Swipe or Click:** Drag a gem towards its neighbour, or use the classic click-then-click. Works with mouse, touch and stylus.
+- **💾 Persistent Campaign:** Story progress is saved — close the tab and pick up where you left off. Reset it any time from the menu.
 - **Smart Engine:** Deadlock detector (auto-shuffles if no moves are possible) and a Hint System that suggests a move after 5 seconds of inactivity.
 - **Quality of Life:** English/Polish localization, UI Zoom options, Eye-saving Gray Theme, level progress counter in Story mode.
 
 ## 🕹️ How to Play
 
-1. **Click** an item to select it.
-2. **Click an adjacent item** (up, down, left, right) to swap them.
-3. **Form a line of 3** or more matching items to destroy them and earn points.
-4. **Break the Ice!** Match items directly next to frozen blocks to shatter the ice. Don't ignore it, or the virus will spread.
+1. **Swipe** a gem towards the neighbour you want to swap it with — or **click** a gem and then click an adjacent one.
+2. **Form a line of 3** or more matching items to destroy them and earn points.
+3. **Break the Ice!** Match items directly next to frozen blocks to shatter the ice. Don't ignore it, or the virus will spread.
+4. When you run out of moves, any power-ups left on the board detonate automatically. Hit **⏩ Speed up** if you'd rather not watch — your score is exactly the same either way.
 
 ## 🛠️ Local Development
 
@@ -57,6 +59,17 @@ To run the game locally, you just need a web browser! No installation required.
 3. Enjoy!
 
 ## 📋 Changelog
+
+### v1.3.0
+- Added **swipe controls** — drag a gem towards its neighbour to swap. Works with mouse, touch and stylus, alongside the existing click-to-select
+- Added **⏩ Speed up** button during the end-of-game power-up detonation — shortens the animations only, the score is unchanged
+- Added **campaign reset** button in the Story Mode tile (your record is kept)
+- **Story progress is now saved** — returning to the menu or closing the page no longer sends you back to level 1
+- Fixed the game over modal staying open after **Play Again**, leaving the new board hidden behind it
+- Fixed **updates never reaching players**: the service worker cached under a fixed name and served stale files forever. Now versioned and network-first, so a reload always shows the current version (still works offline)
+- Player nicknames are now **escaped before display** — a crafted nickname could previously run code in other players' browsers
+- Replaced the JSONBin **master key** with a scoped access key, so the leaderboard can no longer be deleted by anyone reading the source
+- Completed **Polish localization** — leaderboard, Daily Challenge, stats panel and table headers were partly hardcoded English
 
 ### v1.2.0
 - Added **Daily Challenge** mode — unique seeded board every day, shared leaderboard

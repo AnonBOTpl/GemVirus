@@ -33,15 +33,17 @@
 - **📊 Statystyki Gracza:** Śledź liczbę rozgrywek, rekordy, średni wynik, ukończone poziomy i ulubiony tryb.
 - **🎉 Konfetti:** Świętuj nowe rekordy i ukończone poziomy z efektem konfetti.
 - **📱 Wsparcie PWA:** Zainstaluj GemVirus na telefonie lub komputerze jak prawdziwą aplikację — działa też offline.
+- **🖱️ Przesuwanie lub Klikanie:** Przeciągnij owoc w stronę sąsiada albo użyj klasycznego klik-klik. Działa myszką, palcem i rysikiem.
+- **💾 Zapisywana Kampania:** Postęp w trybie Fabularnym jest zapisywany — zamknij kartę i wróć tam, gdzie skończyłeś. Reset dostępny w menu.
 - **Inteligentny Silnik:** System detekcji "Deadlocka" oraz System Podpowiedzi (wskazuje ruch po 5 sekundach bezczynności).
 - **Ustawienia (Quality of Life):** Lokalizacja EN/PL, przybliżanie planszy (Zoom), ciemny motyw kafelków, licznik poziomu w trybie Story (np. Poziom 4/20).
 
 ## 🕹️ Jak Grać
 
-1. **Kliknij** owoc, aby go zaznaczyć.
-2. **Kliknij sąsiada** (góra, dół, lewo, prawo), aby zamienić je miejscami.
-3. **Ułóż linię 3** (lub więcej) takich samych owoców, aby zniknęły.
-4. **Rozbij Lód!** Układaj dopasowania tuż obok zamrożonych bloków, aby skruszyć lód. Nie ignoruj go, inaczej wirus zaleje planszę.
+1. **Przesuń** owoc w stronę sąsiada, z którym chcesz go zamienić — albo **kliknij** owoc, a potem kliknij sąsiada.
+2. **Ułóż linię 3** (lub więcej) takich samych owoców, aby zniknęły.
+3. **Rozbij Lód!** Układaj dopasowania tuż obok zamrożonych bloków, aby skruszyć lód. Nie ignoruj go, inaczej wirus zaleje planszę.
+4. Gdy skończą się ruchy, pozostałe Power-Upy wybuchają automatycznie. Nie chcesz czekać? Kliknij **⏩ Przyspiesz** — wynik będzie dokładnie taki sam.
 
 ## 🛠️ Uruchomienie Lokalne
 
@@ -55,6 +57,17 @@ Aby zagrać lokalnie, nie potrzebujesz serwera ani instalacji. Wystarczy przegl�
 3. Gotowe!
 
 ## 📋 Historia Zmian (Changelog)
+
+### v1.3.0
+- Dodano **sterowanie przesuwaniem** — przeciągnij owoc w stronę sąsiada, aby zamienić je miejscami. Działa myszką, palcem i rysikiem, obok dotychczasowego klikania
+- Dodano przycisk **⏩ Przyspiesz** podczas końcowej detonacji Power-Upów — skraca same animacje, wynik pozostaje bez zmian
+- Dodano przycisk **resetu kampanii** na kafelku trybu Fabularnego (rekord zostaje zachowany)
+- **Postęp kampanii jest teraz zapisywany** — powrót do menu ani zamknięcie strony nie cofa już do poziomu 1
+- Naprawiono okno końcowe pozostające otwarte po kliknięciu **Zagraj Ponownie**, przez co nowa plansza była zasłonięta
+- Naprawiono **aktualizacje nie docierające do graczy**: service worker zapisywał pliki pod stałą nazwą i w nieskończoność podawał starą wersję. Teraz wersjonowany i pobierający najpierw z sieci, więc odświeżenie zawsze pokazuje aktualną grę (offline nadal działa)
+- Nicki graczy są teraz **zabezpieczane przed wyświetleniem** — spreparowany nick mógł wcześniej uruchomić kod w przeglądarkach innych graczy
+- Zastąpiono **klucz główny** JSONBin kluczem o ograniczonych uprawnieniach, dzięki czemu rankingu nie da się już usunąć z poziomu kodu strony
+- Uzupełniono **polską lokalizację** — ranking, Wyzwanie Dnia, panel statystyk i nagłówki tabel były częściowo po angielsku
 
 ### v1.2.0
 - Dodano tryb **Wyzwanie Dnia** — unikalna plansza każdego dnia, wspólny ranking
